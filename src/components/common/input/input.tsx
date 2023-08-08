@@ -1,27 +1,25 @@
-import { FormControl, FormLabel, Input } from "@chakra-ui/react";
-import { InputHTMLAttributes } from 'react'
+import { FormControl, FormLabel, Input } from '@chakra-ui/react';
+import { InputHTMLAttributes } from 'react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
-  onChange?: (value: any) => void,
-  label?: string,
-  placeholder?: string,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onChange?: (value: any) => void;
+  label?: string;
+  placeholder?: string;
 }
 
-export default function InputData ({ onChange, label, placeholder, ...inputProps }: InputProps) {
+export default function InputData({ onChange, label, placeholder }: InputProps) {
   return (
-    <FormControl 
-      isRequired
-      pb={"30px"}
-    >
+    <FormControl isRequired pb={'30px'}>
       <FormLabel>{`${label}`}: </FormLabel>
-      <Input 
-        placeholder = {placeholder}
-        onChange={e => {
-          if (onChange){
-            onChange(e.target.value)
+      <Input
+        placeholder={placeholder}
+        onChange={(e) => {
+          if (onChange) {
+            onChange(e.target.value);
           }
-        }} 
+        }}
       />
     </FormControl>
-    )
+  );
 }

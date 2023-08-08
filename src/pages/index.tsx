@@ -1,7 +1,7 @@
-import Layout from '@/components/layout/Layoutzz'
 import SidebarMenu from '@/components/layout/menu/sidebarMenu'
 import SidebarNav from '@/components/layout/layout'
 import Head from 'next/head'
+import Layout from '@/components/layout/layout'
 
 export default function Home() {
   return (
@@ -13,7 +13,7 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       {/* <Layout /> */}
-      <SidebarNav />
+      <Layout />
           {/* <SidebarMenu key={1} >
 
           </SidebarMenu> */}

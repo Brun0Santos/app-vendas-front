@@ -10,28 +10,49 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 
+import { Produto } from '@/app/models/produtos/produtosModel';
+import { useProdutoService } from '@/app/services';
 import InputData from '@/components/common/input/input';
 import Layout from '@/components/layout/layout';
 
 export const CadastroProdutos = () => {
-  const [sku, setSku] = useState<string | undefined>('');
-  const [preco, setPreco] = useState<string>('');
-  const [nome, setNome] = useState<string | undefined>('');
-  const [descricao, setDescricao] = useState<string | undefined>('');
+  const service = useProdutoService();
+  const [sku, setSku] = useState<string>('');
+  const [preco, setPreco] = useState<number>();
+  const [nome, setNome] = useState<string>('');
+  const [descricao, setDescricao] = useState<string>('');
+  const [id, setId] = useState<string>();
+  const [dataCadastro, setDataCadastro] = useState<string | undefined>('');
 
   function submit() {
-    const produto = {
+    const produto: Produto = {
       sku,
       preco,
       nome,
       descricao,
     };
-    console.log(produto);
+    service.salvar(produto).then((res) => {
+      console.log(res);
+      setId(res.id);
+      setDataCadastro(res.dataCadastro);
+    });
   }
 
   return (
     <Layout titulo="Produtos">
       <Flex flexDirection={'column'} p={'25px'} w={'97%'}>
+        {id && (
+          <Grid templateColumns="repeat(2, 1fr)" gap={6}>
+            <GridItem w="100%">
+              <InputData label="Id" valueInput={id} disableInput={true} />
+            </GridItem>
+
+            <GridItem w="100%">
+              <InputData label="Data Cadastro" valueInput={dataCadastro} disableInput={true} />
+            </GridItem>
+          </Grid>
+        )}
+
         <Grid templateColumns="repeat(2, 1fr)" gap={6}>
           <GridItem w="100%">
             <InputData label="Sku" value={sku} placeholder="Digite o SKU" onChange={setSku} />
@@ -65,7 +86,7 @@ export const CadastroProdutos = () => {
 
         <ButtonGroup gap="4">
           <Button colorScheme="green" onClick={submit}>
-            Salvar
+            {id ? 'Atualizar' : 'Salvar'}
           </Button>
           <Button colorScheme="blackAlpha">Voltar</Button>
         </ButtonGroup>

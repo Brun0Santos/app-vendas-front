@@ -6,14 +6,25 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   onChange?: (value: any) => void;
   label?: string;
   placeholder?: string;
+  disableInput?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  valueInput?: any;
 }
 
-export default function InputData({ onChange, label, placeholder }: InputProps) {
+export default function InputData({
+  onChange,
+  label,
+  placeholder,
+  disableInput,
+  valueInput,
+}: InputProps) {
   return (
     <FormControl isRequired pb={'30px'}>
       <FormLabel>{`${label}`}: </FormLabel>
       <Input
         placeholder={placeholder}
+        disabled={disableInput}
+        value={valueInput}
         onChange={(e) => {
           if (onChange) {
             onChange(e.target.value);

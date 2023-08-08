@@ -1,0 +1,100 @@
+import { useRouter } from "next/router";
+
+import { Avatar, Box, Button, Center, Link as ChakraLink, Container, Flex, FormControl, FormLabel, HStack, Heading, Square, Stack, Text } from "@chakra-ui/react";
+
+import SidebarMenu from './menu'
+import Link from "next/link";
+import { Grid, GridItem } from '@chakra-ui/react'
+import SidebarNav from "./Layout";
+import { Input } from '@chakra-ui/react'
+import { FiArrowRight } from 'react-icons/fi'
+import { IconType } from 'react-icons'
+
+export default function WithSubnavigation() {
+  
+
+  return (
+   <>
+    <Flex 
+      w={"100%"} 
+      h={"100vh"} 
+      bg={"#EBC5AB"}>
+
+      <Flex 
+        alignItems={"Center"} 
+        justifyContent={"center"}  
+        w={"1200px"} 
+        h={"100vh"} 
+        bg={"#fff"}>
+        
+        <Box 
+          p={"75px 60px 93px 60px"}
+          bg={"#FFF"}
+          w={"600px"} 
+          h={"750px"} 
+          boxShadow={"0px 19px 40px rgba(0, 0, 0, 0.12)"} 
+          borderRadius={"20px"}
+        >
+            <Heading fontSize={"36px"} color={"#F37358"}>
+              Logo Hero
+            </Heading>
+
+            <Box mt={"60px"}>
+              <Text fontSize={"16px"} color={"rgba(0, 0, 0, 0.5"}>Welcome to Back</Text>
+              <Heading fontSize={"45px"} mt={"10px"}>Sign In</Heading>
+
+            <FormControl 
+              isRequired 
+              mt={"50px"} 
+              mb={"30px"}>
+              <FormLabel>Email</FormLabel>
+
+              <Input 
+                bg={"#FFF6F4"} 
+                type="text" 
+                placeholder='Digite seu email' 
+                p={"10px"}/>
+            </FormControl>
+
+            <FormControl isRequired>
+              <FormLabel>Password</FormLabel>
+              <Input bg={"#FFF6F4"} type="password" placeholder='Digite seu senha' p={"10px"}/>
+            </FormControl>
+
+            <Button 
+              mx={"auto"}
+              display={"block"}
+              borderRadius={"9px"}
+              justifyContent={"center"}
+              mt={"45px"}   
+              rightIcon={<FiArrowRight/>}
+              backgroundColor={"#eb9989"}>Sign In
+            </Button>
+
+            <Text
+              mt={"30px"}
+              textAlign={"center"}
+              fontSize={"16px"}
+              color={"rgba(0, 0, 0, 0.2"}
+            >I dont have an account ? {" "}
+              <Text
+                as={"a"}
+                href="/"
+                color={"#eb9989"}
+              >
+                 Sign up
+              </Text>
+            </Text>
+
+            </Box>
+        </Box>
+        
+      </Flex>
+      <Box>bbbbbbbbbbb</Box>
+
+    </Flex>
+   </>
+    
+  );
+};
+

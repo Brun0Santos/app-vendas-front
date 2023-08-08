@@ -1,7 +1,25 @@
+import InputData from "@/components/common/input/input"
 import Layout from "@/components/layout/layout"
 import { Flex, FormControl, FormLabel, Input, Textarea, Button, ButtonGroup, Grid, GridItem   } from "@chakra-ui/react"
+import { useState } from "react"
 
 export const CadastroProdutos = () => {
+
+  const [sku, setSku] = useState<string | undefined>('')
+  const [preco, setPreco] = useState<string>('') 
+  const [nome, setNome] = useState<string | undefined>('') 
+  const [descricao, setDescricao] = useState<string | undefined>('')  
+
+  function submit () {
+    const produto = {
+      sku,
+      preco,
+      nome,
+      descricao
+    }
+    console.log(produto);
+  }
+
   return (
       <Layout titulo="Produtos">
           <Flex
@@ -11,44 +29,45 @@ export const CadastroProdutos = () => {
           >
             <Grid templateColumns='repeat(2, 1fr)' gap={6}>
               <GridItem w='100%'>
-                  <FormControl 
-                    isRequired
-                    pb={"30px"}
-                  >
-                    <FormLabel>Sku: </FormLabel>
-                    <Input placeholder='Digite o SKU do produto'/>
-                </FormControl>
+                  <InputData 
+                    label="Sku"
+                    value={sku}
+                    placeholder="Digite o SKU"
+                    onChange={setSku}
+                  />
               </GridItem>
 
               <GridItem w='100%'>
-                <FormControl 
-                  isRequired
-                  pb={"30px"}
-                >
-                  <FormLabel>Preço: </FormLabel>
-                  <Input placeholder='Digite o preço do produto' />
-                </FormControl>
+                <InputData 
+                  label="Preço"
+                  value={preco}
+                  placeholder="Digite o preço do produto"
+                  onChange={setPreco}
+                />
               </GridItem>
             </Grid>
-            
-            <FormControl 
-              isRequired
-              pb={"30px"}
-            >
-              <FormLabel>Nome: </FormLabel>
-              <Input placeholder='Digite o nome do produto' />
-            </FormControl>
+
+            <InputData 
+              label="Nome"
+              value={nome}
+              placeholder="Digite o nome do produto"
+              onChange={setNome}
+            />
 
             <FormControl 
               isRequired
               pb={"30px"}
             >
               <FormLabel>Descrição: </FormLabel>
-              <Textarea placeholder='Digite a descrição do produto'/>
+              <Textarea 
+                placeholder='Digite a descrição do produto' 
+                value={descricao}
+                onChange={e => setDescricao(e.target.value)}
+              />
             </FormControl>
             
             <ButtonGroup gap='4'>
-              <Button colorScheme='green'>Salvar</Button>
+              <Button colorScheme='green' onClick={submit}>Salvar</Button>
               <Button colorScheme='blackAlpha'>Voltar</Button>
             </ButtonGroup>
           </Flex>

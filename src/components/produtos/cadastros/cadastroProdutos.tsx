@@ -14,10 +14,12 @@ import { Produto } from '@/app/models/produtos/produtosModel';
 import { useProdutoService } from '@/app/services';
 import { convereterEmBigDecimal } from '@/app/util/parserValue';
 import InputData from '@/components/common/input/input';
+import { messageToast } from '@/components/common/messages/messages';
 import Layout from '@/components/layout/layout';
 
 export const CadastroProdutos = () => {
   const service = useProdutoService();
+  const message = messageToast();
   const [codProduto, setCodProduto] = useState<string>('');
   const [preco, setPreco] = useState<string>('');
   const [nome, setNome] = useState<string>('');
@@ -37,16 +39,22 @@ export const CadastroProdutos = () => {
     if (id) {
       service.atualizarProduto(produto).then((res) => {
         console.log(res);
+        message.viewToast({
+          title: 'Produto atualizado com sucesso',
+          status: 'info',
+        });
       });
     } else {
       service.salvar(produto).then((res) => {
-        console.log(res);
         setId(res.id);
         setDataCadastro(res.dataCadastro);
+        message.viewToast({
+          title: 'Produto salvo com sucesso',
+          status: 'success',
+        });
       });
     }
   }
-
   return (
     <Layout titulo="Produtos">
       <Flex flexDirection={'column'} p={'25px'} w={'97%'}>

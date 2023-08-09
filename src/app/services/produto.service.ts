@@ -11,7 +11,7 @@ export const useProdutoService = () => {
     return response.data;
   };
 
-  const atualizar = async (produto: Produto): Promise<void> => {
+  const atualizarProduto = async (produto: Produto): Promise<void> => {
     const url: string = `${resourceUrl}/${produto.id}`;
     await httpCliente.put<Produto>(url, produto);
   };
@@ -29,7 +29,7 @@ export const useProdutoService = () => {
 
   return {
     salvar,
-    atualizar,
+    atualizarProduto,
     getProdutoFromId,
     deletarProduto,
   };

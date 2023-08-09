@@ -12,13 +12,14 @@ import { useState } from 'react';
 
 import { Produto } from '@/app/models/produtos/produtosModel';
 import { useProdutoService } from '@/app/services';
+import { convereterEmBigDecimal } from '@/app/util/parserValue';
 import InputData from '@/components/common/input/input';
 import Layout from '@/components/layout/layout';
 
 export const CadastroProdutos = () => {
   const service = useProdutoService();
-  const [sku, setSku] = useState<string>('');
-  const [preco, setPreco] = useState<number>();
+  const [codProduto, setCodProduto] = useState<string>('');
+  const [preco, setPreco] = useState<string>('');
   const [nome, setNome] = useState<string>('');
   const [descricao, setDescricao] = useState<string>('');
   const [id, setId] = useState<string>();
@@ -26,16 +27,24 @@ export const CadastroProdutos = () => {
 
   function submit() {
     const produto: Produto = {
-      sku,
-      preco,
+      id,
+      codProduto,
+      preco: convereterEmBigDecimal(preco),
       nome,
       descricao,
     };
-    service.salvar(produto).then((res) => {
-      console.log(res);
-      setId(res.id);
-      setDataCadastro(res.dataCadastro);
-    });
+
+    if (id) {
+      service.atualizarProduto(produto).then((res) => {
+        console.log(res);
+      });
+    } else {
+      service.salvar(produto).then((res) => {
+        console.log(res);
+        setId(res.id);
+        setDataCadastro(res.dataCadastro);
+      });
+    }
   }
 
   return (
@@ -55,7 +64,13 @@ export const CadastroProdutos = () => {
 
         <Grid templateColumns="repeat(2, 1fr)" gap={6}>
           <GridItem w="100%">
-            <InputData label="Sku" value={sku} placeholder="Digite o SKU" onChange={setSku} />
+            <InputData
+              label="Código do Produto"
+              value={codProduto}
+              placeholder="Digite o código do produto"
+              onChanges={setCodProduto}
+              typeInput="number"
+            />
           </GridItem>
 
           <GridItem w="100%">
@@ -63,7 +78,9 @@ export const CadastroProdutos = () => {
               label="Preço"
               value={preco}
               placeholder="Digite o preço do produto"
-              onChange={setPreco}
+              onChanges={setPreco}
+              currency={true}
+              maxLength={13}
             />
           </GridItem>
         </Grid>
@@ -72,7 +89,7 @@ export const CadastroProdutos = () => {
           label="Nome"
           value={nome}
           placeholder="Digite o nome do produto"
-          onChange={setNome}
+          onChanges={setNome}
         />
 
         <FormControl isRequired pb={'30px'}>

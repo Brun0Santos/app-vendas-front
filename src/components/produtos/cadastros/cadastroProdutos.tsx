@@ -36,25 +36,34 @@ export const CadastroProdutos = () => {
       descricao,
     };
 
-    if (id) {
-      service.atualizarProduto(produto).then((res) => {
-        console.log(res);
-        message.viewToast({
-          title: 'Produto atualizado com sucesso',
-          status: 'info',
-        });
+    if (!codProduto || !preco || !nome || !descricao) {
+      message.viewToast({
+        title: 'Os campos Cod Produto, Preço, Nome e Descrição são obrigatórios',
+        status: 'info',
+        duration: 4400,
       });
     } else {
-      service.salvar(produto).then((res) => {
-        setId(res.id);
-        setDataCadastro(res.dataCadastro);
-        message.viewToast({
-          title: 'Produto salvo com sucesso',
-          status: 'success',
+      if (id) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        service.atualizarProduto(produto).then((res) => {
+          message.viewToast({
+            title: 'Produto atualizado com sucesso',
+            status: 'info',
+          });
         });
-      });
+      } else {
+        service.salvar(produto).then((res) => {
+          setId(res.id);
+          setDataCadastro(res.dataCadastro);
+          message.viewToast({
+            title: 'Produto salvo com sucesso',
+            status: 'success',
+          });
+        });
+      }
     }
   }
+
   return (
     <Layout titulo="Produtos">
       <Flex flexDirection={'column'} p={'25px'} w={'97%'}>

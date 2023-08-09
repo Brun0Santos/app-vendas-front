@@ -4,7 +4,7 @@ interface MessageProps {
   texto?: string;
 }
 
-export default function Messages({ texto }: MessageProps) {
+export default function MessagesInput({ texto }: MessageProps) {
   return (
     <>
       <FormErrorMessage>{`${texto}.`}</FormErrorMessage>

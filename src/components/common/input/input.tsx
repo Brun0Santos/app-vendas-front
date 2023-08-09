@@ -12,6 +12,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   valueInput?: string | number;
   currency?: boolean;
   typeInput?: string;
+  isMessageInput?: boolean;
 }
 
 export default function InputData({
@@ -49,7 +50,6 @@ export default function InputData({
           }
 
           if (onChanges) {
-            console.log(valor);
             onChanges(valor);
           }
         }}

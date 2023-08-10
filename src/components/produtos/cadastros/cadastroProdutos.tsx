@@ -8,6 +8,7 @@ import {
   GridItem,
   Textarea,
 } from '@chakra-ui/react';
+import Link from 'next/link';
 import { useState } from 'react';
 
 import { Produto } from '@/app/models/produtos/produtosModel';
@@ -38,8 +39,8 @@ export const CadastroProdutos = () => {
 
     if (!codProduto || !preco || !nome || !descricao) {
       message.viewToast({
-        title: 'Os campos Cod Produto, Preço, Nome e Descrição são obrigatórios',
-        status: 'info',
+        title: 'Os campos cod produto, preço, nome e descrição são obrigatórios',
+        status: 'error',
         duration: 4400,
       });
     } else {
@@ -48,7 +49,7 @@ export const CadastroProdutos = () => {
         service.atualizarProduto(produto).then((res) => {
           message.viewToast({
             title: 'Produto atualizado com sucesso',
-            status: 'info',
+            status: 'success',
           });
         });
       } else {
@@ -122,7 +123,9 @@ export const CadastroProdutos = () => {
           <Button colorScheme="green" onClick={submit}>
             {id ? 'Atualizar' : 'Salvar'}
           </Button>
-          <Button colorScheme="blackAlpha">Voltar</Button>
+          <Link href={'/consultas/produtos'}>
+            <Button colorScheme="blackAlpha">Voltar</Button>
+          </Link>
         </ButtonGroup>
       </Flex>
     </Layout>

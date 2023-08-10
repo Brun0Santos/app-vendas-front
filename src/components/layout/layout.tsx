@@ -10,11 +10,7 @@ interface LayoutProps {
 
 export default function Layout({ children, titulo }: LayoutProps) {
   return (
-    <Flex
-      // bg={"gray.100"}
-      w={'100%'}
-      h={'100vh'}
-    >
+    <Flex bg={'gray.50'} w={'100%'} h={'100vh'}>
       <Flex w={'15%'} h={'100vh'}>
         <SidebarMenu />
       </Flex>

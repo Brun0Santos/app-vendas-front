@@ -16,6 +16,8 @@ export const messageToast = () => {
       status,
       duration: duration || 2100,
       isClosable: true,
+      variant: 'left-accent',
+      position: 'top',
     });
   };
 

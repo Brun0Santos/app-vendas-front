@@ -1,4 +1,4 @@
-import { Button, Table, TableContainer, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
+import { Table, Tbody, Td, Th, Thead, Tr } from '@chakra-ui/react';
 import { BsTrash } from 'react-icons/bs';
 import { LuEdit } from 'react-icons/lu';
 
@@ -11,7 +11,7 @@ interface ProdutoRowProps {
 
 interface ListaProdutos {
   children?: React.ReactNode;
-  produtos: Array<Produto>;
+  produtos?: Array<Produto>;
 }
 
 export function TabelaProdutos({ produtos }: ListaProdutos) {
@@ -28,11 +28,7 @@ export function TabelaProdutos({ produtos }: ListaProdutos) {
             <Th></Th>
           </Tr>
         </Thead>
-        <Tbody>
-          {produtos.map((p, i) => (
-            <ProdutoRow produto={p} key={i} />
-          ))}
-        </Tbody>
+        <Tbody>{produtos?.map((p, i) => <ProdutoRow produto={p} key={i} />)}</Tbody>
       </Table>
     </div>
   );

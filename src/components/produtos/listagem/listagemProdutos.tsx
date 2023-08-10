@@ -1,32 +1,20 @@
 import { Box, Button, Flex } from '@chakra-ui/react';
+import { AxiosResponse } from 'axios';
 import Link from 'next/link';
+import useSWR from 'swr';
 
-// import { MdPlaylistAdd } from 'react-icons/md';
+import { httpCliente } from '@/app/http/routes';
 import { Produto } from '@/app/models/produtos/produtosModel';
+import Loader from '@/components/common/loader/loader';
 import Layout from '@/components/layout/layout';
 
 import { TabelaProdutos } from './tabela/tabelaProdutos';
 
-const produtosArrays: Array<Produto> = [
-  {
-    id: '1',
-    nome: 'teste',
-    codProduto: '12121',
-    dataCadastro: '',
-    descricao: '',
-    preco: 12121,
-  },
-  {
-    id: '2',
-    nome: 'teste',
-    codProduto: '12121',
-    dataCadastro: '',
-    descricao: '',
-    preco: 12121,
-  },
-];
-
 export function ListagemProdutos() {
+  const { data: response } = useSWR<AxiosResponse<Produto[]>>('/api/produtos', (url) =>
+    httpCliente.get(url),
+  );
+
   return (
     <Layout titulo="Produtos">
       <Box w={'100%'}>
@@ -37,8 +25,11 @@ export function ListagemProdutos() {
         </Link>
 
         <Flex flexDirection={'column'}>
-          <TabelaProdutos produtos={produtosArrays} />
+          <TabelaProdutos produtos={response?.data || []} />
         </Flex>
+        <Box textAlign={'center'} pt={'30px'}>
+          <Loader isRender={!response} />
+        </Box>
       </Box>
     </Layout>
   );

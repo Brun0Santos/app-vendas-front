@@ -24,17 +24,6 @@ export default function InputData({
   currency,
   typeInput,
 }: InputProps) {
-  // const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  //   let value = e.target.value;
-  //   if (value && currency) {
-  //     value = formatReal(value);
-  //   }
-  //   if (onChange) {
-  //     console.log(value);
-  //     onChange(value);
-  //   }
-  // };
-
   return (
     <FormControl isRequired pb={'30px'}>
       <FormLabel>{`${label}`}: </FormLabel>
@@ -57,3 +46,13 @@ export default function InputData({
     </FormControl>
   );
 }
+
+// const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+//   let value = e.target.value;
+//   if (value && currency) {
+//     value = formatReal(value);
+//   }
+//   if (onChanges) {
+//     onChanges(value);
+//   }
+// };

@@ -5,16 +5,18 @@ import { LuEdit } from 'react-icons/lu';
 import { Produto } from '@/app/models/produtos/produtosModel';
 
 interface ProdutoRowProps {
-  children?: React.ReactNode;
   produto: Produto;
+  onEdit: (produto: Produto) => void;
+  onDelete: (produto: Produto) => void;
 }
 
 interface ListaProdutos {
-  children?: React.ReactNode;
   produtos?: Array<Produto>;
+  onEdit: (produto: Produto) => void;
+  onDelete: (produto: Produto) => void;
 }
 
-export function TabelaProdutos({ produtos }: ListaProdutos) {
+export function TabelaProdutos({ produtos, onEdit, onDelete }: ListaProdutos) {
   return (
     <div>
       <Table variant="simple" size={'lg'}>
@@ -28,26 +30,32 @@ export function TabelaProdutos({ produtos }: ListaProdutos) {
             <Th></Th>
           </Tr>
         </Thead>
-        <Tbody>{produtos?.map((p, i) => <ProdutoRow produto={p} key={i} />)}</Tbody>
+        <Tbody>
+          {produtos?.map((p, i) => (
+            <ProdutoRow produto={p} key={i} onEdit={onEdit} onDelete={onDelete} />
+          ))}
+        </Tbody>
       </Table>
     </div>
   );
 }
 
-const ProdutoRow = ({ produto }: ProdutoRowProps) => {
+const ProdutoRow = ({ produto, onEdit, onDelete }: ProdutoRowProps) => {
   return (
     <Tr key={produto.id} _hover={{ bg: 'gray.50' }}>
-      <Td>{produto.id}</Td>
+      <Td>#{produto.id}</Td>
       <Td>{produto.codProduto}</Td>
       <Td>{produto.nome}</Td>
-      <Td isNumeric>{produto.preco}</Td>
+      <Td>{produto.preco} R$</Td>
       <Td fontSize={'20px'} textAlign={'end'}>
-        <button>
+        {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
+        <button onClick={(e) => onEdit(produto)}>
           <LuEdit />
         </button>
       </Td>
       <Td fontSize={'20px'}>
-        <button>
+        {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
+        <button onClick={(e) => onDelete(produto)}>
           <BsTrash />
         </button>
       </Td>

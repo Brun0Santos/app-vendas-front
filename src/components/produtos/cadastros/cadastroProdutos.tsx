@@ -9,11 +9,12 @@ import {
   Textarea,
 } from '@chakra-ui/react';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 
 import { Produto } from '@/app/models/produtos/produtosModel';
 import { useProdutoService } from '@/app/services';
-import { convereterEmBigDecimal } from '@/app/util/parserValue';
+import { convereterEmBigDecimal, formatReal } from '@/app/util/parserValue';
 import InputData from '@/components/common/input/input';
 import { messageToast } from '@/components/common/messages/messages';
 import Layout from '@/components/layout/layout';
@@ -21,12 +22,27 @@ import Layout from '@/components/layout/layout';
 export const CadastroProdutos = () => {
   const service = useProdutoService();
   const message = messageToast();
-  const [codProduto, setCodProduto] = useState<string>('');
+  const [codProduto, setCodProduto] = useState<string | undefined>('');
   const [preco, setPreco] = useState<string>('');
-  const [nome, setNome] = useState<string>('');
-  const [descricao, setDescricao] = useState<string>('');
+  const [nome, setNome] = useState<string | undefined>('');
+  const [descricao, setDescricao] = useState<string | undefined>('');
   const [id, setId] = useState<string>();
   const [dataCadastro, setDataCadastro] = useState<string | undefined>('');
+  const router = useRouter();
+  const { id: queryId } = router.query;
+
+  useEffect(() => {
+    if (typeof queryId === 'string') {
+      service.getProdutoFromId(queryId).then((data) => {
+        setId(data.id);
+        setDataCadastro(data.dataCadastro);
+        setCodProduto(data.codProduto);
+        setPreco(formatReal(String(data.preco)));
+        setNome(data.nome);
+        setDescricao(data.descricao);
+      });
+    }
+  }, [queryId]);
 
   function submit() {
     const produto: Produto = {
@@ -84,7 +100,7 @@ export const CadastroProdutos = () => {
           <GridItem w="100%">
             <InputData
               label="Código do Produto"
-              value={codProduto}
+              valueInput={codProduto}
               placeholder="Digite o código do produto"
               onChanges={setCodProduto}
               typeInput="number"
@@ -94,7 +110,7 @@ export const CadastroProdutos = () => {
           <GridItem w="100%">
             <InputData
               label="Preço"
-              value={preco}
+              valueInput={preco}
               placeholder="Digite o preço do produto"
               onChanges={setPreco}
               currency={true}
@@ -105,7 +121,7 @@ export const CadastroProdutos = () => {
 
         <InputData
           label="Nome"
-          value={nome}
+          valueInput={nome}
           placeholder="Digite o nome do produto"
           onChanges={setNome}
         />

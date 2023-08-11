@@ -2,6 +2,7 @@ import { Box, Button, Flex } from '@chakra-ui/react';
 import { AxiosResponse } from 'axios';
 import Link from 'next/link';
 import Router from 'next/router';
+import { useEffect, useState } from 'react';
 import useSWR from 'swr';
 
 import { httpCliente } from '@/app/http/routes';
@@ -16,9 +17,14 @@ import { TabelaProdutos } from './tabela/tabelaProdutos';
 export function ListagemProdutos() {
   const service = useProdutoService();
   const message = messageToast();
+  const [listaProdutos, setListaProduto] = useState<Array<Produto>>([]);
   const { data: response } = useSWR<AxiosResponse<Produto[]>>('/api/produtos', (url) =>
     httpCliente.get(url),
   );
+
+  useEffect(() => {
+    setListaProduto(response?.data || []);
+  }, [response]);
 
   const handleOnEdit = (produto: Produto) => {
     const urlResource = `/cadastro/produtos?id=${produto.id}`;
@@ -26,17 +32,15 @@ export function ListagemProdutos() {
   };
 
   const handleOnDelete = (produto: Produto) => {
-    console.log(produto);
-    if (typeof produto.id === 'number') {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      service.deletarProduto(produto.id).then((e) => {
-        console.log('aaaa');
-        message.viewToast({
-          status: 'success',
-          title: 'Produto deletado',
-        });
+    //eslint-disable-next-line @typescript-eslint/no-unused-vars
+    service.deletarProduto(String(produto.id)).then((e) => {
+      message.viewToast({
+        status: 'success',
+        title: 'Produto deletado',
       });
-    }
+    });
+    const novaLista: Array<Produto> = listaProdutos.filter((p) => p.id !== produto.id);
+    setListaProduto(novaLista);
   };
 
   return (
@@ -50,7 +54,7 @@ export function ListagemProdutos() {
 
         <Flex flexDirection={'column'}>
           <TabelaProdutos
-            produtos={response?.data || []}
+            produtos={listaProdutos}
             onEdit={handleOnEdit}
             onDelete={handleOnDelete}
           />

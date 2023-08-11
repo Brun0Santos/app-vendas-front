@@ -1,5 +1,5 @@
 import { FormControl, FormLabel, Input } from '@chakra-ui/react';
-import { InputHTMLAttributes } from 'react';
+import { FormEventHandler, InputHTMLAttributes } from 'react';
 
 import { formatReal } from '@/app/util/parserValue';
 
@@ -25,7 +25,7 @@ export default function InputData({
   typeInput,
 }: InputProps) {
   return (
-    <FormControl isRequired pb={'30px'}>
+    <FormControl>
       <FormLabel>{`${label}`}: </FormLabel>
       <Input
         placeholder={placeholder}

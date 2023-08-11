@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import { Cliente } from '@/app/models/clientes/clientesModel';
+import { formatReal } from '@/app/util/parserValue';
 import { clienteCadastroSchema } from '@/components/common/input/clienteSchema';
 import InputData from '@/components/common/input/input';
 import Layout from '@/components/layout/layout';
@@ -43,6 +44,11 @@ export default function CadastroClientes() {
     console.log(dataCliente);
   }
 
+  function toLowerCaseFun(value: string): string {
+    console.log(value);
+    return value.toUpperCase();
+  }
+
   return (
     <div>
       <Layout titulo="Clientes">
@@ -72,6 +78,7 @@ export default function CadastroClientes() {
                 autoComplete="off"
                 valueInput={nome}
                 onChanges={setNome}
+                formatter={formatReal}
               />
               {errors.nome?.message && (
                 <p style={{ color: 'red', fontSize: '13px' }}>{errors.nome?.message}</p>

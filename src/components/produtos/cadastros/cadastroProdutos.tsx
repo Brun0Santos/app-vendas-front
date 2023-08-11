@@ -113,8 +113,8 @@ export const CadastroProdutos = () => {
               valueInput={preco}
               placeholder="Digite o preço do produto"
               onChanges={setPreco}
-              currency={true}
               maxLength={13}
+              formatter={formatReal}
             />
           </GridItem>
         </Grid>

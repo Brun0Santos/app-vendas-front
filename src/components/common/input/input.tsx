@@ -1,7 +1,5 @@
 import { FormControl, FormLabel, Input } from '@chakra-ui/react';
-import { FormEventHandler, InputHTMLAttributes } from 'react';
-
-import { formatReal } from '@/app/util/parserValue';
+import { InputHTMLAttributes } from 'react';
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -10,7 +8,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   placeholder?: string;
   disableInput?: boolean;
   valueInput?: string | number;
-  currency?: boolean;
+  formatter?: (value: string) => string;
   typeInput?: string;
   isMessageInput?: boolean;
 }
@@ -21,9 +19,19 @@ export default function InputData({
   placeholder,
   disableInput,
   valueInput,
-  currency,
   typeInput,
+  formatter,
 }: InputProps) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onInputChange = (e: any) => {
+    const value = e.target.value;
+
+    const formattedValue = (formatter && formatter(String(value))) || value;
+    if (onChanges) {
+      onChanges(formattedValue);
+    }
+  };
+
   return (
     <FormControl>
       <FormLabel>{`${label}`}: </FormLabel>
@@ -32,27 +40,8 @@ export default function InputData({
         disabled={disableInput}
         value={valueInput}
         type={typeInput}
-        onChange={(e) => {
-          let valor = e.target.value;
-          if (valor && currency) {
-            valor = formatReal(valor);
-          }
-
-          if (onChanges) {
-            onChanges(valor);
-          }
-        }}
+        onChange={onInputChange}
       />
     </FormControl>
   );
 }
-
-// const onInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-//   let value = e.target.value;
-//   if (value && currency) {
-//     value = formatReal(value);
-//   }
-//   if (onChanges) {
-//     onChanges(value);
-//   }
-// };

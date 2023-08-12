@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import { Cliente } from '@/app/models/clientes/clientesModel';
-import { formatReal } from '@/app/util/parserValue';
+import { formatCPF, formatData, formatTelefone } from '@/app/util/parserValue';
 import { clienteCadastroSchema } from '@/components/common/input/clienteSchema';
 import InputData from '@/components/common/input/input';
 import Layout from '@/components/layout/layout';
@@ -41,6 +41,7 @@ export default function CadastroClientes() {
       email,
       telefone,
     };
+
     console.log(dataCliente);
   }
 
@@ -78,7 +79,6 @@ export default function CadastroClientes() {
                 autoComplete="off"
                 valueInput={nome}
                 onChanges={setNome}
-                formatter={formatReal}
               />
               {errors.nome?.message && (
                 <p style={{ color: 'red', fontSize: '13px' }}>{errors.nome?.message}</p>
@@ -88,11 +88,12 @@ export default function CadastroClientes() {
             <GridItem>
               <InputData
                 label="CPF"
-                typeInput="number"
+                typeInput="text"
                 placeholder="Digite seu cpf"
                 autoComplete="off"
                 valueInput={cpf}
                 onChanges={setCpf}
+                formatter={formatCPF}
               />
               {errors.cpf?.message && (
                 <p style={{ color: 'red', fontSize: '13px' }}>{errors.cpf?.message}</p>
@@ -102,11 +103,12 @@ export default function CadastroClientes() {
             <GridItem>
               <InputData
                 label="Data Nascimento"
-                typeInput="number"
+                typeInput="text"
                 autoSave="false"
                 placeholder="Digite sua data de nascimento"
                 valueInput={dataNascimento}
                 onChanges={setDataNascimento}
+                formatter={formatData}
               />
             </GridItem>
           </Grid>
@@ -133,11 +135,12 @@ export default function CadastroClientes() {
             <GridItem>
               <InputData
                 label="Telefone"
-                typeInput="number"
+                typeInput="text"
                 autoSave="false"
                 placeholder="Digite seu telefone"
                 valueInput={telefone}
                 onChanges={setTelefone}
+                formatter={formatTelefone}
               />
             </GridItem>
           </Grid>

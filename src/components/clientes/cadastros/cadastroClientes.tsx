@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 
 import { Cliente } from '@/app/models/clientes/clientesModel';
+import { useClienteService } from '@/app/services/index';
 import { formatCPF, formatData, formatTelefone } from '@/app/util/parserValue';
 import { clienteCadastroSchema } from '@/components/common/input/clienteSchema';
 import InputData from '@/components/common/input/input';
@@ -29,6 +30,7 @@ export default function CadastroClientes() {
   } = useForm<FormInput>({
     resolver: zodResolver(clienteCadastroSchema),
   });
+  const service = useClienteService();
 
   function submit() {
     const dataCliente: Cliente = {
@@ -42,12 +44,15 @@ export default function CadastroClientes() {
       telefone,
     };
 
-    console.log(dataCliente);
-  }
-
-  function toLowerCaseFun(value: string): string {
-    console.log(value);
-    return value.toUpperCase();
+    if (codigoId) {
+      service.atualizarCliente(dataCliente);
+    } else {
+      console.log(dataCliente);
+      service.salvar(dataCliente).then((data) => {
+        setCodigoId(String(data.id));
+        setDataCadastro(String(data.dataCadastro));
+      });
+    }
   }
 
   return (
@@ -125,7 +130,7 @@ export default function CadastroClientes() {
             <GridItem>
               <InputData
                 label="Email"
-                typeInput="number"
+                typeInput="text"
                 placeholder="Digite seu email"
                 valueInput={email}
                 onChanges={setEmail}

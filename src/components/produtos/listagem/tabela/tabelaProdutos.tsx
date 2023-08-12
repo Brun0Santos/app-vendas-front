@@ -18,25 +18,23 @@ interface ListaProdutos {
 
 export function TabelaProdutos({ produtos, onEdit, onDelete }: ListaProdutos) {
   return (
-    <div>
-      <Table variant="simple" size={'lg'}>
-        <Thead>
-          <Tr>
-            <Th>Id</Th>
-            <Th>Código do Produto</Th>
-            <Th>Nome</Th>
-            <Th isNumeric>Preço</Th>
-            <Th></Th>
-            <Th></Th>
-          </Tr>
-        </Thead>
-        <Tbody>
-          {produtos?.map((p, i) => (
-            <ProdutoRow produto={p} key={i} onEdit={onEdit} onDelete={onDelete} />
-          ))}
-        </Tbody>
-      </Table>
-    </div>
+    <Table variant="simple" size={'lg'}>
+      <Thead>
+        <Tr>
+          <Th>Id</Th>
+          <Th>Código do Produto</Th>
+          <Th>Nome</Th>
+          <Th>Preço</Th>
+          <Th textAlign={'end'}></Th>
+          <Th></Th>
+        </Tr>
+      </Thead>
+      <Tbody>
+        {produtos?.map((p, i) => (
+          <ProdutoRow produto={p} key={i} onEdit={onEdit} onDelete={onDelete} />
+        ))}
+      </Tbody>
+    </Table>
   );
 }
 

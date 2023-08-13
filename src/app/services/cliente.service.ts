@@ -2,6 +2,7 @@ import { AxiosResponse } from 'axios';
 
 import { httpCliente } from '@/app/http/routes';
 import { Cliente } from '@/app/models/clientes/clientesModel';
+import { Page } from '@/components/common/pageable/pageableCliente';
 
 const resourceUrl: string = '/api/clientes';
 
@@ -27,10 +28,22 @@ export const useClienteService = () => {
     await httpCliente.delete(url);
   };
 
+  const getPageClient = async (
+    nome: string = '',
+    cpf: string = '',
+    page: number = 0,
+    size: number = 10,
+  ): Promise<Page<Cliente>> => {
+    const url: string = `${resourceUrl}?name=${nome}&cpf${cpf}&page=${page}&size=${size}`;
+    const response: AxiosResponse<Page<Cliente>> = await httpCliente.get<Page<Cliente>>(url);
+    return response.data;
+  };
+
   return {
     salvar,
     atualizarCliente,
     getClienteFromId,
     deletarCliente,
+    getPageClient,
   };
 };

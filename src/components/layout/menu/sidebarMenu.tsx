@@ -11,7 +11,7 @@ interface LinkItemProps {
 const LinkItems: Array<LinkItemProps> = [
   { name: 'Home', icon: FiHome, href: '/' },
   { name: 'Produtos', icon: FiShoppingCart, href: '/consultas/produtos' },
-  { name: 'Clientes', icon: FiUsers, href: '/cadastro/clientes' },
+  { name: 'Clientes', icon: FiUsers, href: '/consultas/clientes' },
   { name: 'Config', icon: FiSettings, href: '/drive.com' },
   { name: 'Sair', icon: FiPower, href: '/google.com' },
 ];

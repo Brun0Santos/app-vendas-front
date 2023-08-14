@@ -46,14 +46,12 @@ const ProdutoRow = ({ produto, onEdit, onDelete }: ProdutoRowProps) => {
       <Td>{produto.nome}</Td>
       <Td>{produto.preco} R$</Td>
       <Td fontSize={'20px'} textAlign={'end'}>
-        {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
-        <button onClick={(e) => onEdit(produto)}>
+        <button onClick={() => onEdit(produto)}>
           <LuEdit />
         </button>
       </Td>
       <Td fontSize={'20px'}>
-        {/* eslint-disable-next-line @typescript-eslint/no-unused-vars */}
-        <button onClick={(e) => onDelete(produto)}>
+        <button onClick={() => onDelete(produto)}>
           <BsTrash />
         </button>
       </Td>

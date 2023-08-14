@@ -1,20 +1,9 @@
-import {
-  Button,
-  Flex,
-  Grid,
-  GridItem,
-  Modal,
-  ModalBody,
-  ModalCloseButton,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  ModalOverlay,
-} from '@chakra-ui/react';
+import { Button, Flex, Grid, GridItem } from '@chakra-ui/react';
 import Router from 'next/router';
 import { Column } from 'primereact/column';
 import { DataTable, DataTablePageEvent } from 'primereact/datatable';
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { BsSearch, BsTrash } from 'react-icons/bs';
 import { LuEdit } from 'react-icons/lu';
 
@@ -22,7 +11,6 @@ import { Cliente } from '@/app/models/clientes/clientesModel';
 import { useClienteService } from '@/app/services/index';
 import { formatCPF } from '@/app/util/parserValue';
 import InputData from '@/components/common/input/input';
-import { messageToast } from '@/components/common/messages/messages';
 import ModalMessage from '@/components/common/messages/modalMessage';
 import { Page } from '@/components/common/pageable/pageableCliente';
 import Layout from '@/components/layout/layout';
@@ -30,7 +18,7 @@ import Layout from '@/components/layout/layout';
 export const ListagemClientes = () => {
   const [nome, setNome] = useState<string>('');
   const [cpf, setCpf] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+  const [modal, setModal] = useState<boolean>(false);
   const [data, setData] = useState<Cliente>();
   const [clientes, setClientes] = useState<Page<Cliente>>({
     content: [],
@@ -40,10 +28,9 @@ export const ListagemClientes = () => {
     totalElements: 0,
   });
   const serive = useClienteService();
-  const message = messageToast();
 
   const handlePage = (event?: DataTablePageEvent) => {
-    // setLoading(true); .finally(() => setLoading(false));
+    // setModal(true); .finally(() => setModal(false));
     serive.getPageClient(nome, cpf, event?.page, event?.rows).then((result) => {
       setClientes(result);
     });
@@ -61,33 +48,36 @@ export const ListagemClientes = () => {
           style={{ marginRight: '30px' }}
           onClick={() => Router.push(`${url}?id=${registro.id}`)}
         >
-          <LuEdit />
+          <LuEdit fontSize={'18'} />
         </button>
-        <button onClick={() => toastMessageDelete(registro)}>
-          <BsTrash />
+        <button onClick={() => toastData(registro)}>
+          <BsTrash fontSize={'18'} />
         </button>
       </div>
     );
   };
 
   function cancelar() {
-    setLoading(false);
+    setModal(false);
   }
 
-  function toastMessageDelete(cliente: Cliente) {
-    setLoading(true);
+  function toastData(cliente: Cliente) {
+    setModal(true);
     setData(cliente);
   }
 
   const deletarCliente = () => {
     if (data?.id !== undefined) {
-      serive.deletarCliente(data.id).then(() => {
-        setLoading(false);
-        message.viewToast({
-          title: 'Produto deletado com sucesso',
-          status: 'success',
+      serive
+        .deletarCliente(data.id)
+        .then(() => {
+          setModal(false);
+          toast.success('Produto deletado com sucesso!');
+          handlePage();
+        })
+        .catch(() => {
+          toast.error('Erro ao tentar deletar produto.');
         });
-      });
     }
   };
 
@@ -127,7 +117,7 @@ export const ListagemClientes = () => {
 
           <DataTable
             value={clientes.content}
-            tableStyle={{ minWidth: '50rem', marginTop: '50px', color: 'red' }}
+            tableStyle={{ minWidth: '50rem', marginTop: '50px' }}
             totalRecords={clientes.totalElements}
             first={clientes.first}
             lazy
@@ -143,7 +133,7 @@ export const ListagemClientes = () => {
             <Column field="email" header="Email" style={{ backgroundColor: 'white' }}></Column>
             <Column body={actionTemplate} style={{ backgroundColor: 'white' }} />
           </DataTable>
-          <ModalMessage show={loading} cancelar={cancelar} excluir={deletarCliente} />
+          <ModalMessage show={modal} cancelar={cancelar} excluir={deletarCliente} />
         </Flex>
       </Layout>
     </div>

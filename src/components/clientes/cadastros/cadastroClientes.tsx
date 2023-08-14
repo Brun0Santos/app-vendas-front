@@ -1,8 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Button, ButtonGroup, Flex, Grid, GridItem } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import toast from 'react-hot-toast';
 import * as z from 'zod';
 
 import { Cliente } from '@/app/models/clientes/clientesModel';
@@ -15,14 +18,14 @@ import Layout from '@/components/layout/layout';
 type FormInput = z.infer<typeof clienteCadastroSchema>;
 
 export default function CadastroClientes() {
-  const [codigoId, setCodigoId] = useState<string>('');
-  const [dataCadastro, setDataCadastro] = useState<string>('');
-  const [nome, setNome] = useState<string>('');
-  const [cpf, setCpf] = useState<string>('');
-  const [dataNascimento, setDataNascimento] = useState<string>('');
-  const [endereco, setEndereco] = useState<string>('');
-  const [email, setEmail] = useState<string>('');
-  const [telefone, setTelefone] = useState<string>('');
+  const [codigoId, setCodigoId] = useState<string | undefined>('');
+  const [dataCadastro, setDataCadastro] = useState<string | undefined>('');
+  const [nome, setNome] = useState<string | undefined>('');
+  const [cpf, setCpf] = useState<string | undefined>('');
+  const [dataNascimento, setDataNascimento] = useState<string | undefined>('');
+  const [endereco, setEndereco] = useState<string | undefined>('');
+  const [email, setEmail] = useState<string | undefined>('');
+  const [telefone, setTelefone] = useState<string | undefined>('');
   const {
     register,
     handleSubmit,
@@ -31,6 +34,23 @@ export default function CadastroClientes() {
     resolver: zodResolver(clienteCadastroSchema),
   });
   const service = useClienteService();
+  const router = useRouter();
+  const { id } = router.query;
+
+  useEffect(() => {
+    if (id) {
+      service.getClienteFromId(String(id)).then((data) => {
+        setCodigoId(data.id);
+        setDataCadastro(data.dataCadastro);
+        setNome(data.nome);
+        setCpf(data.cpf);
+        setDataNascimento(data.dataNascimento);
+        setEndereco(data.endereco);
+        setEmail(data.email);
+        setTelefone(data.telefone);
+      });
+    }
+  }, [id]);
 
   function submit() {
     const dataCliente: Cliente = {
@@ -45,12 +65,14 @@ export default function CadastroClientes() {
     };
 
     if (codigoId) {
-      service.atualizarCliente(dataCliente);
+      service
+        .atualizarCliente(dataCliente)
+        .then(() => toast.success('Produto atualizado com sucesso!'));
     } else {
-      console.log(dataCliente);
       service.salvar(dataCliente).then((data) => {
         setCodigoId(String(data.id));
         setDataCadastro(String(data.dataCadastro));
+        toast.success('Produto salvo com sucesso!');
       });
     }
   }
@@ -99,6 +121,7 @@ export default function CadastroClientes() {
                 valueInput={cpf}
                 onChanges={setCpf}
                 formatter={formatCPF}
+                disableInput
               />
               {errors.cpf?.message && (
                 <p style={{ color: 'red', fontSize: '13px' }}>{errors.cpf?.message}</p>
@@ -149,10 +172,13 @@ export default function CadastroClientes() {
               />
             </GridItem>
           </Grid>
-          <ButtonGroup mt={'15px'}>
+          <ButtonGroup mt={'15px'} gap="4">
             <Button colorScheme="green" _hover={{ bg: 'gray.400' }} onClick={submit} type="submit">
-              Salvar
+              {id ? 'Atualizar' : 'Salvar'}
             </Button>
+            <Link href={'/consultas/clientes'}>
+              <Button colorScheme="blackAlpha">Voltar</Button>
+            </Link>
           </ButtonGroup>
         </Flex>
       </Layout>

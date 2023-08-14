@@ -32,7 +32,7 @@ export const useClienteService = () => {
     nome: string = '',
     cpf: string = '',
     page: number = 0,
-    size: number = 10,
+    size: number = 7,
   ): Promise<Page<Cliente>> => {
     const url: string = `${resourceUrl}?name=${nome}&cpf${cpf}&page=${page}&size=${size}`;
     const response: AxiosResponse<Page<Cliente>> = await httpCliente.get<Page<Cliente>>(url);

@@ -61,8 +61,7 @@ export const CadastroProdutos = () => {
       });
     } else {
       if (id) {
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        service.atualizarProduto(produto).then((res) => {
+        service.atualizarProduto(produto).then(() => {
           message.viewToast({
             title: 'Produto atualizado com sucesso',
             status: 'success',

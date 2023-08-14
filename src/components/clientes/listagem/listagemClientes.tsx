@@ -27,13 +27,16 @@ export const ListagemClientes = () => {
     size: 7,
     totalElements: 0,
   });
-  const serive = useClienteService();
+  const service = useClienteService();
 
   const handlePage = (event?: DataTablePageEvent) => {
     // setModal(true); .finally(() => setModal(false));
-    serive.getPageClient(nome, cpf, event?.page, event?.rows).then((result) => {
-      setClientes(result);
-    });
+    service
+      .getPageClient(nome, cpf, event?.page, event?.rows)
+      .then((result) => {
+        setClientes(result);
+      })
+      .catch(() => toast.error('Nenhum cliente encontrado'));
   };
 
   const handleSubmit = () => {
@@ -68,7 +71,7 @@ export const ListagemClientes = () => {
 
   const deletarCliente = () => {
     if (data?.id !== undefined) {
-      serive
+      service
         .deletarCliente(data.id)
         .then(() => {
           setModal(false);
@@ -126,6 +129,7 @@ export const ListagemClientes = () => {
             onPage={handlePage}
             emptyMessage={'Nenhum registro'}
             size="small"
+            rowsPerPageOptions={[7, 10, 15]}
           >
             <Column field="id" header="Codigo" style={{ backgroundColor: 'white' }}></Column>
             <Column field="nome" header="Nome" style={{ backgroundColor: 'white' }}></Column>
